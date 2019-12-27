@@ -1,25 +1,25 @@
 {
     "collab_server" : "",
     "contents" : "",
-    "created" : 1577035339043.000,
+    "created" : 1577205025383.000,
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
     "hash" : "0",
-    "id" : "BEDBC832",
-    "lastKnownWriteTime" : 1577204766,
-    "last_content_update" : 1577204766326,
-    "path" : "~/GitHub/bbanalyze/R/hello.R",
-    "project_path" : "R/hello.R",
+    "id" : "ED6A836E",
+    "lastKnownWriteTime" : 1577449952,
+    "last_content_update" : 1577449952,
+    "path" : "~/GitHub/bbanalyze/.Rbuildignore",
+    "project_path" : ".Rbuildignore",
     "properties" : {
-        "cursorPosition" : "15,16",
+        "cursorPosition" : "0,0",
         "scrollLine" : "0"
     },
     "read_only" : false,
     "read_only_alternatives" : [
     ],
-    "relative_order" : 2,
+    "relative_order" : 5,
     "source_on_save" : false,
     "source_window" : "",
-    "type" : "r_source"
+    "type" : "text"
 }
