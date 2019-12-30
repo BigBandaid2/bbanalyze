@@ -26,3 +26,7 @@ hello_world <- function(to_print = "Hello world", excited = FALSE){
 # list_rate_card = read.csv("C:\\Users\\Ethan Shen\\Documents\\GitHub\\DataPortal\\list_rate_card.csv")
 # getwd()
 # use_data(list_rate_card)
+# install.packages("rappdirs")
+# library(rappdirs)
+# user_data_dir("bbanalyze")
+# site_data_dir("bbanalyze")

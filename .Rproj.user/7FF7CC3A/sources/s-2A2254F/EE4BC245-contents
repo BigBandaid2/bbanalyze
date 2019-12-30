@@ -1,4 +1,0 @@
-#' @import testthat
-# library(testthat)
-
-expect_that(hello_world(), equals("Hello world"))
