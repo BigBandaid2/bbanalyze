@@ -2,16 +2,17 @@
 % Please edit documentation in R/parse_all_vr.R
 \name{cluster_times}
 \alias{cluster_times}
-\title{Title}
+\title{cluster_times}
 \usage{
-cluster_times(df)
+cluster_times(filename)
 }
 \arguments{
-\item{df}{}
+\item{filename}{a good description}
 }
 \value{
-
+This function takes the date/time and account of each row and clusters those rows with matching info
+        together to be treated as part of a single request event.
 }
 \description{
-Title
+cluster_times
 }

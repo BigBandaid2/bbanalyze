@@ -28,7 +28,7 @@ hello_world <- function(to_print = "Hello world", excited = FALSE){
 
 #' parse_all_vr
 #'
-#' @param db A character string identifying the database location
+#' @param conn A character string identifying the database location
 #' @param dir_vr A character string identifying the directory where verification reports are held
 #' @param target_account The account to be parsed
 #' @param target_month The month of verification reports to be parsed
@@ -38,7 +38,6 @@ hello_world <- function(to_print = "Hello world", excited = FALSE){
 #'         is designed to process the verification reports of each month of each account. Nested functions include:
 #'         parse_detail(), parse_summary(), parse_refresh()
 #'
-#' @examples
 #' @export
 parse_all_vr = function(conn,
                         dir_vr,
@@ -46,10 +45,11 @@ parse_all_vr = function(conn,
                         target_month) {
 
   ### if usage detail file, send to parse_detail()
-  filename = paste("usage_detail", target_account, target_month, sep = "_")
-  if (filename %in% dir(dir_vr)) {
+  filename = file.path(dir_vr,paste("usage_detail", target_account, target_month, sep = "_"))
+  if (file.exists(filename)) {
     this.usage = parse_detail(conn, filename)
   }
+  return(T)
 }
 
 
@@ -58,36 +58,36 @@ parse_all_vr = function(conn,
 
 #' parse_detail
 #'
-#' @param db A character string identifying the database location
+#' @param conn A character string identifying the database location
 #' @param filename A character string giving the filename to be parsed
 #'
 #' @return dataframe containing the parsed results
 #'         This function takes a given file and reads/clean/write the contents for later analysis.
 #'         This function contains the following sub-functions:
-#'                 check_db_detail() - checks the database to see if the file has been processed already
+#'                 check_db() - checks the database to see if the file has been processed already
 #'                 YNtoTF() - converts Y/N entries to T/F for better performance and numerical processing
 #'                 cluster_times() - clusters rows of the verification reports by their date/account
 #'                 product_split()
-#' @examples
-#' parse_detail()
-#'
+#' @import magrittr
+#' @import readr
+#' @import dplyr
 #' @export
-parse_detail = function(db, filename) {
+parse_detail = function(conn, filename) {
 
   ### read the usage detail file
-  if(grepl("^usage_detail",filename)) {
+  if(grepl("usage_detail",filename)) {
     this.usage = readr::read_delim(
-      file.path(dir_vr, filename),
+      filename,
       delim = "|",
       na = "N/A",
-      # col_types = "ffffcfcfcccccccc",
+      # col_types = "ffffcfcfcccccccc", ### sets the col types but commented out because super slow
       col_types = readr::cols(.default = "c"),
       trim_ws = T
     )
   }
 
-  this.usage %<>% mutate_at(vars(matches('^CTRB|INIT|BO_OPT')), funs(. == 'Y'))
-  this.usage %<>% mutate(tz = substr(this.usage$PROCESSED_TIME, 21,23))
+  this.usage %<>% dplyr::mutate_at(dplyr::vars(dplyr::matches('^CTRB|INIT|BO_OPT')), dplyr::funs(. == 'Y'))
+  this.usage %<>% dplyr::mutate(tz = substr(this.usage$PROCESSED_TIME, 21,23))
   # table(this.usage$tz)
 
   this.usage$PROCESSED_TIME = as.POSIXct(paste0(
@@ -96,16 +96,10 @@ parse_detail = function(db, filename) {
   ), format = "%c")
   ### BST timezone is not allowed, I've not checked if different timezones are used in various places
 
-  # ?read_csv
-  names(this.usage)
-
   ### if there are zero rows, then return the empty dataframe
   if(nrow(this.usage) == 0) {
     return(this.usage)
   }
-
-  hist(table(this.usage$OUTPUT_ID))
-  head(this.usage)
 
   ### special treatment for scheduled usage detail
   if(grepl("scheduled_securities",filename)) {
@@ -133,20 +127,17 @@ parse_detail = function(db, filename) {
 
 #' parse_summary
 #'
-#' @param db A character string identifying the database location
+#' @param conn A character string identifying the database location
 #' @param filename A character string giving the filename to be parsed
 #'
 #' @return dataframe containing the parsed results
 #'         This function parses the summary verification reports for later comparison to the synthetic invoice derived
 #'         in parse_detail. This function contains the following sub-functions:
-#'                 check_db_detail() - checks the database to see if the file has been processed already
-#'
-#' @examples
-#' parse_summary()
+#'                 check_db() - checks the database to see if the file has been processed already
 #'
 #' @export
-parse_summary = function(db, filename) {
-
+parse_summary = function(conn, filename) {
+  return(T)
 }
 
 # parse_refresh = function(conn, filename) {
@@ -155,63 +146,39 @@ parse_summary = function(db, filename) {
 
 
 
-#' check_db_detail
+#' check_db
 #'
-#' @param db A character string identifying the database location
+#' @param conn A character string identifying the database location
 #'
 #' @return True/False. This function checks the database to see that the given entry has been processed.
 #'
-#' @examples
-#' check_db_detail()
-#'
 #' @export
-check_db_detail = function(db) {
-
-}
-
-#' YntoTF
-#'
-#' @param filename A character string giving the filename to be parsed
-#'
-#' @return This function converts Y/N character entries to True/False [T/F] and returns a dataframe containing the
-#'         modified output.
-#'
-#' @examples
-#' YNtoTF()
-#'
-#' @export
-YNtoTF = function(filename) {
-
+check_db = function(conn) {
+  return(T)
 }
 
 
 #' cluster_times
 #'
-#' @param
+#' @param filename a good description
 #'
 #' @return This function takes the date/time and account of each row and clusters those rows with matching info
 #'         together to be treated as part of a single request event.
 #'
-#' @examples
-#' cluster_times()
-#'
 #' @export
 cluster_times = function(filename) {
-
+  return(T)
 }
 
 
 
 #' product_split
 #'
-#' @param
+#' @param filename a very good description
 #'
-#' @return
-#'
-#' @examples
-#' product_split()
+#' @return something
 #'
 #' @export
 product_split = function(filename) {
-
+  return(T)
 }

@@ -2,16 +2,25 @@
 % Please edit documentation in R/parse_all_vr.R
 \name{parse_all_vr}
 \alias{parse_all_vr}
-\title{Title}
+\title{parse_all_vr}
 \usage{
 parse_all_vr(conn, dir_vr, target_account, target_month)
 }
 \arguments{
-\item{target_month}{}
+\item{conn}{A character string identifying the database location}
+
+\item{dir_vr}{A character string identifying the directory where verification reports are held}
+
+\item{target_account}{The account to be parsed}
+
+\item{target_month}{The month of verification reports to be parsed}
 }
 \value{
-
+list(filenames, # of rows)
+        This function reads/cleans/writes parsed verification files to a db for later use. The function
+        is designed to process the verification reports of each month of each account. Nested functions include:
+        parse_detail(), parse_summary(), parse_refresh()
 }
 \description{
-Title
+parse_all_vr
 }

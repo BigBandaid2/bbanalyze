@@ -2,16 +2,16 @@
 % Please edit documentation in R/parse_all_vr.R
 \name{check_db}
 \alias{check_db}
-\title{Title}
+\title{check_db}
 \usage{
-check_db(conn, ...)
+check_db(conn)
 }
 \arguments{
-\item{...}{}
+\item{conn}{A character string identifying the database location}
 }
 \value{
-
+True/False. This function checks the database to see that the given entry has been processed.
 }
 \description{
-Title
+check_db
 }

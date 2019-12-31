@@ -2,10 +2,11 @@
 
 export(check_db)
 export(cluster_times)
-export(dl_product_split)
 export(hello_world)
 export(parse_all_vr)
 export(parse_detail)
 export(parse_summary)
-export(to_logical_df)
+export(product_split)
+import(dplyr)
 import(magrittr)
+import(readr)

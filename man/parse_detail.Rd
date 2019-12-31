@@ -2,16 +2,24 @@
 % Please edit documentation in R/parse_all_vr.R
 \name{parse_detail}
 \alias{parse_detail}
-\title{Title}
+\title{parse_detail}
 \usage{
 parse_detail(conn, filename)
 }
 \arguments{
-\item{filename}{}
+\item{conn}{A character string identifying the database location}
+
+\item{filename}{A character string giving the filename to be parsed}
 }
 \value{
-
+dataframe containing the parsed results
+        This function takes a given file and reads/clean/write the contents for later analysis.
+        This function contains the following sub-functions:
+                check_db() - checks the database to see if the file has been processed already
+                YNtoTF() - converts Y/N entries to T/F for better performance and numerical processing
+                cluster_times() - clusters rows of the verification reports by their date/account
+                product_split()
 }
 \description{
-Title
+parse_detail
 }
