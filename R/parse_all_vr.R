@@ -23,43 +23,68 @@ hello_world <- function(to_print = "Hello world", excited = FALSE){
   print(to_print)
 }
 
-#' Title
+
+
+
+#' parse_all_vr
 #'
-#' @param db
-#' @param dir_vr
-#' @param target_account
-#' @param target_month
+#' @param db A character string identifying the database location
+#' @param dir_vr A character string identifying the directory where verification reports are held
+#' @param target_account The account to be parsed
+#' @param target_month The month of verification reports to be parsed
 #'
-#' @return
-#' @export
+#' @return list(filenames, # of rows)
+#'         This function reads/cleans/writes parsed verification files to a db for later use. The function
+#'         is designed to process the verification reports of each month of each account. Nested functions include:
+#'         parse_detail(), parse_summary(), parse_refresh()
 #'
 #' @examples
+#' parse_all_vr()
+#'
+#'
+#' @export
 parse_all_vr = function(db, dir_vr, target_account, target_month) {
 
 }
 
-#' Title
+
+
+
+
+#' parse_detail
 #'
-#' @param db
-#' @param filename
+#' @param db A character string identifying the database location
+#' @param filename A character string giving the filename to be parsed
 #'
-#' @return
-#' @export
-#'
+#' @return dataframe containing the parsed results
+#'         This function takes a given file and reads/clean/write the contents for later analysis.
+#'         This function contains the following sub-functions:
+#'                 check_db_detail() - checks the database to see if the file has been processed already
+#'                 YNtoTF() - converts Y/N entries to T/F for better performance and numerical processing
+#'                 cluster_times() - clusters rows of the verification reports by their date/account
+#'                 product_split()
 #' @examples
+#' parse_detail()
+#'
+#' @export
 parse_detail = function(db, filename) {
 
 }
 
-#' Title
+#' parse_summary
 #'
-#' @param db
-#' @param filename
+#' @param db A character string identifying the database location
+#' @param filename A character string giving the filename to be parsed
 #'
-#' @return
-#' @export
+#' @return dataframe containing the parsed results
+#'         This function parses the summary verification reports for later comparison to the synthetic invoice derived
+#'         in parse_detail. This function contains the following sub-functions:
+#'                 check_db_detail() - checks the database to see if the file has been processed already
 #'
 #' @examples
+#' parse_summary()
+#'
+#' @export
 parse_summary = function(db, filename) {
 
 }
@@ -68,6 +93,65 @@ parse_summary = function(db, filename) {
 #
 # }
 
+
+
+#' check_db_detail
+#'
+#' @param db A character string identifying the database location
+#'
+#' @return True/False. This function checks the database to see that the given entry has been processed.
+#'
+#' @examples
+#' check_db_detail()
+#'
+#' @export
 check_db_detail = function(db) {
+
+}
+
+#' YntoTF
+#'
+#' @param filename A character string giving the filename to be parsed
+#'
+#' @return This function converts Y/N character entries to True/False [T/F] and returns a dataframe containing the
+#'         modified output.
+#'
+#' @examples
+#' YNtoTF()
+#'
+#' @export
+YNtoTF = function(filename) {
+
+}
+
+
+#' cluster_times
+#'
+#' @param
+#'
+#' @return This function takes the date/time and account of each row and clusters those rows with matching info
+#'         together to be treated as part of a single request event.
+#'
+#' @examples
+#' cluster_times()
+#'
+#' @export
+cluster_times = function(filename) {
+
+}
+
+
+
+#' product_split
+#'
+#' @param
+#'
+#' @return
+#'
+#' @examples
+#' product_split()
+#'
+#' @export
+product_split = function(filename) {
 
 }
