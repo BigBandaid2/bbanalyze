@@ -23,10 +23,17 @@ hello_world <- function(to_print = "Hello world", excited = FALSE){
   print(to_print)
 }
 
-# list_rate_card = read.csv("C:\\Users\\Ethan Shen\\Documents\\GitHub\\DataPortal\\list_rate_card.csv")
-# getwd()
-# use_data(list_rate_card)
-# install.packages("rappdirs")
-# library(rappdirs)
-# user_data_dir("bbanalyze")
-# site_data_dir("bbanalyze")
+#' Title
+#'
+#' @param db
+#' @param dir_vr
+#' @param target_account
+#' @param target_month
+#'
+#' @return
+#' @export
+#'
+#' @examples
+parse_all_vr = function(db, dir_vr, target_account, target_month) {
+  return(db)
+}
