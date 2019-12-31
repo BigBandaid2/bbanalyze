@@ -35,5 +35,39 @@ hello_world <- function(to_print = "Hello world", excited = FALSE){
 #'
 #' @examples
 parse_all_vr = function(db, dir_vr, target_account, target_month) {
-  return(db)
+
+}
+
+#' Title
+#'
+#' @param db
+#' @param filename
+#'
+#' @return
+#' @export
+#'
+#' @examples
+parse_detail = function(db, filename) {
+
+}
+
+#' Title
+#'
+#' @param db
+#' @param filename
+#'
+#' @return
+#' @export
+#'
+#' @examples
+parse_summary = function(db, filename) {
+
+}
+
+# parse_refresh = function(db, filename) {
+#
+# }
+
+check_db_detail = function(db) {
+
 }
