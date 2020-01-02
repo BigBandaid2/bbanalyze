@@ -4,10 +4,10 @@
 \alias{cluster_times}
 \title{cluster_times}
 \usage{
-cluster_times(filename)
+cluster_times(filepath)
 }
 \arguments{
-\item{filename}{a good description}
+\item{filepath}{a good description}
 }
 \value{
 This function takes the date/time and account of each row and clusters those rows with matching info

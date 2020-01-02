@@ -4,12 +4,12 @@
 \alias{parse_summary}
 \title{parse_summary}
 \usage{
-parse_summary(conn, filename)
+parse_summary(conn, filepath)
 }
 \arguments{
 \item{conn}{A character string identifying the database location}
 
-\item{filename}{A character string giving the filename to be parsed}
+\item{filepath}{A character string giving the filepath to be parsed}
 }
 \value{
 dataframe containing the parsed results

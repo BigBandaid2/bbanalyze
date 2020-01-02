@@ -16,7 +16,7 @@ parse_all_vr(conn, dir_vr, target_account, target_month)
 \item{target_month}{The month of verification reports to be parsed}
 }
 \value{
-list(filenames, # of rows)
+list(filepaths, # of rows)
         This function reads/cleans/writes parsed verification files to a db for later use. The function
         is designed to process the verification reports of each month of each account. Nested functions include:
         parse_detail(), parse_summary(), parse_refresh()

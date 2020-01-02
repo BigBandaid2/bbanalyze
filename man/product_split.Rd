@@ -4,10 +4,10 @@
 \alias{product_split}
 \title{product_split}
 \usage{
-product_split(filename)
+product_split(filepath)
 }
 \arguments{
-\item{filename}{a very good description}
+\item{filepath}{a very good description}
 }
 \value{
 something
