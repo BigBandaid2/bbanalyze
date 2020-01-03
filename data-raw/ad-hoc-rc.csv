@@ -1,0 +1,13 @@
+Asset.Type,Security Master and Packaged,Corporate Actions,End of Day Derived,End of Day Pricing,Corporate Structure,Capital Structure,Regulatory & Compliance,Fundamentals,Estimates,MIFIR
+"Corporate, Preferred, Money Market",1.78,0.52,0.71,0.71,2.61,0.52,0.52,1.57,2.61,0.75
+US Government,1.05,0.52,0.71,0.71,2.61,0.52,0.52,1.57,2.61,0.75
+Sovereign / Supranationa / Agency,1.78,0.52,0.71,0.71,2.61,0.52,0.52,1.57,2.61,0.75
+Syndicated Loans,2.09,0.52,0.71,0.71,2.61,0.52,0.52,1.57,2.61,0.75
+US Municipals,1.41,0.52,0.71,0.66,2.61,0.52,0.52,1.57,2.61,0.75
+"ABS, CMO, CMBS, Whole Loan",2.35,0.52,2.46,1.1,2.61,0.52,0.52,1.57,2.61,0.75
+Agency Pools and TBAs,0.52,0.52,0.66,0.17,2.61,0.52,0.52,1.57,2.61,0.75
+Equity and Equity Indices,1.36,0.52,0.52,0.21,2.61,0.52,0.52,1.57,2.61,0.75
+Options / Futures / FX / Warrants,1.36,0.52,0.52,0.21,2.61,0.52,0.52,1.57,2.61,0.75
+Funds,1.57,0.52,0.52,0.21,2.61,0.52,0.52,1.57,2.61,0.75
+Economic Statistics,0.21,0.52,0.21,0.21,2.61,0.52,0.52,1.57,2.61,0.75
+Curve Tenor,0.21,NA,2.4,2.61,2.61,0.52,0.52,1.57,2.61,0.75
