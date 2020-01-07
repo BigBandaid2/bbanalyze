@@ -4,10 +4,12 @@
 \alias{cluster_times}
 \title{cluster_times}
 \usage{
-cluster_times(filepath)
+cluster_times(this_usage, cluster = F)
 }
 \arguments{
-\item{filepath}{a good description}
+\item{this_usage}{data.frame from parse_detail()}
+
+\item{cluster}{logical. Defaults to F.}
 }
 \value{
 This function takes the date/time and account of each row and clusters those rows with matching info

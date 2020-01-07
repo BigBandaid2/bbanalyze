@@ -18,6 +18,7 @@ Suggests:
     testthat (>= 2.1.0)
 Imports:
     magrittr,
+    stats,
     tibble,
     plyr,
     dplyr,

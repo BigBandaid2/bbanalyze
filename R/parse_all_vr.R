@@ -1,6 +1,5 @@
 #' parse_all_vr
 #'
-#' @param conn A character string identifying the database location
 #' @param dir_vr A character string identifying the directory where verification reports are held
 #' @param target_account The account to be parsed
 #' @param target_month The month of verification reports to be parsed
@@ -12,8 +11,7 @@
 #'
 #' @importFrom  plyr rbind.fill
 #' @export
-parse_all_vr <- function(conn,
-                         dir_vr,
+parse_all_vr <- function(dir_vr,
                          target_account,
                          target_month) {
   ### get all VR files associated with this target month and account
@@ -157,6 +155,8 @@ check_db <- function(conn) {
 #' @return This function takes the date/time and account of each row and clusters those rows with matching info
 #'         together to be treated as part of a single request event.
 #'
+#' @importFrom  stats aggregate
+#' @example system.file("extdata", "usage_detail_30225811_201811", package = "bbanalyze") %>% parse_detail() %>% cluster_times()
 #' @export
 cluster_times = function(this_usage, cluster = F) {
 
@@ -250,13 +250,6 @@ cluster_times = function(this_usage, cluster = F) {
 
 ### ----------------------------------------------------------------------------
 
-#' product_split
-#'
-#' @param filepath a very good description
-#'
-#' @return something
-#'
-#' @export
-product_split <- function(filepath) {
-  return(T)
-}
+# product_split <- function(filepath) {
+#   return(T)
+# }

@@ -4,11 +4,9 @@
 \alias{parse_all_vr}
 \title{parse_all_vr}
 \usage{
-parse_all_vr(conn, dir_vr, target_account, target_month)
+parse_all_vr(dir_vr, target_account, target_month)
 }
 \arguments{
-\item{conn}{A character string identifying the database location}
-
 \item{dir_vr}{A character string identifying the directory where verification reports are held}
 
 \item{target_account}{The account to be parsed}

@@ -119,12 +119,12 @@ target_month <- 201811
 
 test_that("parse_all_vr is looping through the files", {
   expect_equal(
-    parse_all_vr(conn,dir_vr,target_account,target_month) %>% nrow(),
+    parse_all_vr(dir_vr,target_account,target_month) %>% nrow(),
     3608,
     failure_message = "parse_all_vr() should not getting correct row count"
   )
   expect_equal(
-    parse_all_vr(conn,dir_vr,30358785,target_month) %>% nrow(),
+    parse_all_vr(dir_vr,30358785,target_month) %>% nrow(),
     11801,
     failure_message = "parse_all_vr() should not getting correct row count"
   )
