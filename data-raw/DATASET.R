@@ -1,5 +1,6 @@
-## code to prepare `pub_rate_card` dataset goes here
+### code to prepare `pub_rate_card` dataset goes here
 require(magrittr)
+require(usethis)
 
 rc_by_asset = readr::read_csv(file.path(".","data-raw","sched-by-asset-type.csv"))
 rc_by_asset %<>% tidyr::gather(key = "Asset.Type", value = "List.Price",-Band,-Data.Category)
@@ -35,3 +36,28 @@ rc %<>% dplyr::filter(!is.na(List.Price))
 pub_rate_card = rc
 
 usethis::use_data(pub_rate_card)
+
+################################################################################
+
+### code to read in basic reference sheets
+
+### get the Data License categories
+
+dl_cats = readr::read_csv(file.path(".","data-raw","fields.csv"), col_types = readr::cols(.default = "c"))
+usethis::use_data(dl_cats)
+
+dl_products = read.csv(file.path(".","data-raw","DLContentSets.csv"))
+sort(unique(dl_products$ModuleLevel2))
+usethis::use_data(dl_products)
+
+# bbg_mapping = readLines(file.path(".","data-raw","BbgMapping.conf"))
+# usethis::use_data(bbg_mapping)
+
+# ?read.csv
+asset_class_mapping = read.csv(file.path(".","data-raw","vr_asset_class_mapping.csv"), stringsAsFactors = F)
+head(asset_class_mapping)
+usethis::use_data(asset_class_mapping)
+
+product_mapping = read.csv(file.path(".","data-raw","vr_product_dl_cat_mapping.csv"), stringsAsFactors = F)
+head(product_mapping)
+usethis::use_data(product_mapping)

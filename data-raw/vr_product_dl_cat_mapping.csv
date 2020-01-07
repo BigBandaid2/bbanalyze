@@ -1,0 +1,47 @@
+Categories,Adhoc Name,Scheduled Name
+Fundamentals Industry Specific,Funds.IndustrySpecific,Funds.Indus Specif
+Fundamentals Segmentation,Funds.Segmentation,Funds.Segmentation
+High Quality Liquid Assets,HQLA,HighQualityLqdAssets/HQLA
+Historical Time Series,History,HistTimeSeries
+IFRS 9 SPPI,IFRS 9 SPPI,IFRS9SPPI
+Implied Dividend,ImplDvd,-
+Investor Protection,Investor Protection,InvestorProtection
+Liquidity Assessment,-,LiquidityAssessment/LQA
+MiFIR,MiFIR,MiFIR
+Pricing - End of Day,PxEOD,-
+Pricing - Intraday,PxIntra,-
+Pricing Data,-,Pricing
+Regulatory Solvency,Solvency,Solvency
+Regulatory Solvency Packaged,SolvencyPkg,-
+Regulatory SSFA,SSFA,RegSSFA
+Security Master,SecMastr,SecMaster
+Security Ownership,SecurityOwnership,Security Ownership
+Snapshot,Snapshot,Snapshot
+Supply Chain,SupplyChain,SupplyChain
+Time & Sales (Ticks),Ticks,-
+US Withholding Tax,US Witholding Tax,USWithholdingTax
+Volatility Cube,Market Volatility,-
+Volatility Surface,VolSfce,-
+Basic Tax,Basic Tax,BasicTax
+Bond Quote Composite,BCQ,-
+Bond Quote Composite History,BCQHist,-
+CANS,CANS,CANS
+Central Bank Eligibility,CBE,CBE
+Classifications,Classifications,Classifications
+Collateral Tagging,Collateral Tagging,CollateralTagging
+Corporate Actions,CorpAct,CorporateActions
+Covered Funds CLO,-,CoveredFundsCLO
+Covered Funds SEC,-,CoveredFundsSEC
+Credit Risk Capital Structure,CR-CapStruc,CapitalStructure
+Credit Risk Corporate Structure,CR-CorpStruc,CorporateStructure
+Credit Risk Regulatory Compliance,Cr-RegComp,RegulatoryCompliance
+Default Risk,DefaultRisk,DefaultRisk
+Derived - End of Day,DerivEOD,-
+Derived - Intraday,DerivIntra,-
+Derived Data,-,Derived
+ESG,ESG,ESG
+Estimates,Estimates,Estimates
+Expected Credit Loss,-,ExpectedCreditLoss
+Fundamentals,Fund,Fundamentals
+Fundamentals Expanded,FundamentalsExpanded,Funds.Expanded
+Fundamentals History,FundHist,-

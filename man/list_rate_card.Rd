@@ -3,7 +3,7 @@
 \docType{data}
 \name{list_rate_card}
 \alias{list_rate_card}
-\title{Standard Enterpirse Data License Ad-Hoc rate card list prices}
+\title{Standard Enterpirse Data License Ad-Hoc rate card list prices from standard invoices}
 \format{A data frame with columns:
 \describe{
  \item{Request.Type}{Initital monthly charge (Unique) or subsequent (Access) charges.}
@@ -20,7 +20,7 @@ Bloomberg invoices
 list_rate_card
 }
 \description{
-Standard Enterpirse Data License Ad-Hoc rate card list prices
+Standard Enterpirse Data License Ad-Hoc rate card list prices from standard invoices
 }
 \examples{
 \dontrun{

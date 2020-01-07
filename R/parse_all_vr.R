@@ -134,16 +134,9 @@ parse_summary <- function(conn, filepath) {
 
 ### ----------------------------------------------------------------------------
 
-#' check_db
-#'
-#' @param conn A character string identifying the database location
-#'
-#' @return True/False. This function checks the database to see that the given entry has been processed.
-#'
-#' @export
-check_db <- function(conn) {
-  return(T)
-}
+# check_db <- function(conn) {
+#   return(T)
+# }
 
 ### ----------------------------------------------------------------------------
 
@@ -156,7 +149,9 @@ check_db <- function(conn) {
 #'         together to be treated as part of a single request event.
 #'
 #' @importFrom  stats aggregate
-#' @example system.file("extdata", "usage_detail_30225811_201811", package = "bbanalyze") %>% parse_detail() %>% cluster_times()
+#' @example \dontrun{
+#'   filepath %>% parse_detail() %>% cluster_times()
+#'   }
 #' @export
 cluster_times = function(this_usage, cluster = F) {
 

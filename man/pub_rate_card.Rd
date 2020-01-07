@@ -3,7 +3,7 @@
 \docType{data}
 \name{pub_rate_card}
 \alias{pub_rate_card}
-\title{Standard Enterpirse Data License Ad-Hoc rate card list prices}
+\title{Standard Enterpirse Data License Ad-Hoc rate card list prices from published rates}
 \format{A data frame with columns:
 \describe{
  \item{Request.Type}{Initital monthly charge (Unique) or subsequent (Access) charges.}
@@ -14,17 +14,17 @@
  \item{List.Price}{Standard rate card price}
 }}
 \source{
-Bloomberg invoices
+Bloomberg advertised rates
 }
 \usage{
 pub_rate_card
 }
 \description{
-Standard Enterpirse Data License Ad-Hoc rate card list prices
+Standard Enterpirse Data License Ad-Hoc rate card list prices from published rates
 }
 \examples{
 \dontrun{
- pub_rate)card
+ pub_rate_card
 }
 }
 \keyword{datasets}

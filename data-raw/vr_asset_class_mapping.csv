@@ -1,0 +1,20 @@
+Asset Class,Adhoc Name,Scheduled Name
+CMO/ABS,CMOABS,CMO/ABS
+Commodity Market Volatility Ticker,ComdtyVolTkr,-
+Commodity MVol,ComdtyMVol,-
+Company,Comp,-
+Corporates/Non-US Govt,Corp,FixedIncome
+Curves,Curves,CurveTenor
+Economic Indices,Eco,Equity
+Equity Market Volatility Ticker,EqtyVolTkr,-
+Equity MVol,EqtyMVol,-
+Equity/Equity Indices,EqtyEqtyInd,Equity
+Funds,Funds,Equity
+Index Futures ETP ETF Market Volatility Ticker,IndexVolTkr,-
+Index Futures ETP ETF MVol,IndexMVol,-
+Loans,Loans,FixedIncome
+Mortgage Pools,Mtge,MtgePool
+Municipals,Muni,Municipal
+Options/Futures/FX/Warrants/Currencies,OpFutFx,ListDer
+Sovereign/Supranational/Agency,SovSupAgny,FixedIncome
+US Govt,USGovt,FixedIncome
