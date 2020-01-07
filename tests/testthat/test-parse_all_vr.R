@@ -1,11 +1,10 @@
 # rm(list = ls())
 
-# filepath <- system.file("extdata", "usage_detail_30225811_201811", package = "bbanalyze")
-# this_usage = system.file("extdata", "usage_detail_30225811_201811", package = "bbanalyze") %>% parse_detail()
+filepath <- system.file("extdata", "usage_detail_30225811_201811", package = "bbanalyze")
 
 test_that("sample usage_detail file reads and parses correctly", {
   expect_equal(
-    system.file("extdata", "usage_detail_30225811_201811", package = "bbanalyze") %>%
+    filepath %>%
       parse_detail() %>%
       names(),
     c(
@@ -41,6 +40,7 @@ test_that("sample usage_detail file reads and parses correctly", {
 })
 
 ### ----------------------------------------------------------------------------
+
 # this_usage = system.file("extdata", "scheduled_securities_30358785_201811", package = "bbanalyze") %>% parse_detail()
 
 test_that("sample scheduled_securities file reads and parses correctly", {
@@ -130,3 +130,6 @@ test_that("parse_all_vr is looping through the files", {
   )
 })
 
+### ----------------------------------------------------------------------------
+
+this_usage = system.file("extdata", "usage_detail_30225811_201811", package = "bbanalyze") %>% parse_detail()

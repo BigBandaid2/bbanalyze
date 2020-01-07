@@ -151,14 +151,101 @@ check_db <- function(conn) {
 
 #' cluster_times
 #'
-#' @param filepath a good description
+#' @param this_usage data.frame from parse_detail()
+#' @param cluster logical. Defaults to F.
 #'
 #' @return This function takes the date/time and account of each row and clusters those rows with matching info
 #'         together to be treated as part of a single request event.
 #'
 #' @export
-cluster_times <- function(filepath) {
-  return(T)
+cluster_times = function(this_usage, cluster = F) {
+
+  ### find all output files that occur over multiple days and cluster them into 60 second groups
+  outs = aggregate(this_usage$PROCESSED_TIME,
+                   by = list(OUTPUT_ID = this_usage$OUTPUT_ID),
+                   FUN = function(x) {difftime(range(x)[2], range(x)[1], units = "hours")})
+
+  outs = outs[outs$x > 0,]
+
+  data = data.frame()
+
+  if(nrow(outs) > 0) {
+    i = 1
+    if(cluster == F) {
+      for(i in 1:nrow(outs)) {
+        single_output = this_usage[this_usage$OUTPUT_ID == outs[i,"OUTPUT_ID"],]
+        # plot(single_output$PROCESSED_TIME)
+        print(outs[i,"OUTPUT_ID"])
+        print(length(single_output$PROCESSED_TIME))
+
+        ### no more fancy h-cluster :(
+        # # Ward Hierarchical Clustering
+        # d <- dist(single_output$PROCESSED_TIME, method = "euclidean") # distance matrix
+        # fit <- hclust(d, method="ward")
+        # # plot(fit) # display dendogram
+        # groups <- cutree(fit, h = 10) # cut tree at 10 second mark
+        # # draw dendogram with red borders around the 5 clusters
+        # # rect.hclust(fit, k=5, border="red")
+
+        groups = single_output$PROCESSED_TIME
+
+        print(table(groups))
+        print(paste0(i," of ",nrow(outs)))
+        single_output$OUTPUT_ID_cluster = paste0(single_output$OUTPUT_ID," (", groups,")")
+
+        data = plyr::rbind.fill(data,single_output)
+      }
+    }
+
+    ### incomplete, F cluster option just using unique PROCESSED TIMES
+
+    if(cluster == T) {
+      for(i in 1:nrow(outs)) {
+        single_output = this_usage[this_usage$OUTPUT_ID == outs[i,"OUTPUT_ID"],]
+        # plot(single_output$PROCESSED_TIME)
+        print(outs[i,"OUTPUT_ID"])
+        print(length(single_output$PROCESSED_TIME))
+        print(length(unique(single_output$PROCESSED_TIME)))
+
+        ### build groups just by unique times
+        single_reqs = split(single_output,single_output$PROCESSED_TIME)
+        for (j in 1:length(single_reqs)) {
+          single_reqs[[j]]$OUTPUT_ID_cluster = paste0(single_reqs[[j]]$OUTPUT_ID," (", j,")")
+        }
+
+        gc()
+        single_output = unsplit(single_reqs, single_output$PROCESSED_TIME, drop = FALSE)
+
+        data = plyr::rbind.fill(data,single_output)
+        print(table(single_output$OUTPUT_ID_cluster))
+        print(paste0(i," of ",nrow(outs)))
+      }
+    }
+  }
+
+
+  ### add back all the non-repeating outs
+  outs = aggregate(this_usage$PROCESSED_TIME,
+                   by = list(OUTPUT_ID = this_usage$OUTPUT_ID),
+                   FUN = function(x) {difftime(range(x)[2], range(x)[1], units = "hours")})
+
+  outs = outs[outs$x == 0,]
+  single_output = this_usage[this_usage$OUTPUT_ID %in% outs$OUTPUT_ID,]
+  single_output$OUTPUT_ID_cluster = single_output$OUTPUT_ID
+
+  data = plyr::rbind.fill(data,single_output)
+  length(unique(data$OUTPUT_ID_cluster))
+  length(unique(data$OUTPUT_ID))
+
+  ### now i've seperated all the requests that went out with the same output ID, this will help me match to .req files
+
+  ### Let's find the largest requests and cross them against DL Categroies
+
+  ### this shows me all 3000 .out files and the distribution of DL categories asked for in each
+  names(data)
+  # write.csv(table(data$OUTPUT_ID_cluster,data$BILLABLE_PRODUCT)[,order(table(data$BILLABLE_PRODUCT), decreasing = T)], file = "dusseldorf_reqs.csv")
+
+  return(data)
 }
 
 ### ----------------------------------------------------------------------------
