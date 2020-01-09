@@ -83,3 +83,23 @@
 #'  dl_products
 #' }
 "dl_products"
+
+#' List of all Back Office file product file names by product group
+#'
+#' @source Bloomberg
+#' @format A data frame with columns:
+#' @examples
+#' \dontrun{
+#'  data_sections
+#' }
+"data_sections"
+
+#' List of all Back Office fields, descriptions, and product group
+#'
+#' @source Bloomberg
+#' @format A data frame with columns:
+#' @examples
+#' \dontrun{
+#'  bulk_fields
+#' }
+"bulk_fields"
