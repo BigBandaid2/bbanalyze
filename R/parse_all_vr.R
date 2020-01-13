@@ -149,9 +149,7 @@ parse_summary <- function(conn, filepath) {
 #'         together to be treated as part of a single request event.
 #'
 #' @importFrom  stats aggregate
-#' @example \dontrun{
-#'   filepath %>% parse_detail() %>% cluster_times()
-#'   }
+#'
 #' @export
 cluster_times = function(this_usage, cluster = F) {
 
@@ -248,3 +246,49 @@ cluster_times = function(this_usage, cluster = F) {
 # product_split <- function(filepath) {
 #   return(T)
 # }
+
+### ----------------------------------------------------------------------------
+
+#' Write the parsed VR detail file contents to DB
+#'
+#' @param this_usage dataframe of the parsed VR detail
+#' @param conn DB connection SQLite object
+#' @param args_id client_id as it currently appears in the DB
+#' @param target_account account number for this Bloomberg account
+#' @param target_month billing month in 'MMYYYY'
+#'
+#' @import RSQLite
+#'
+#' @return integer representing number of rows written
+#' @export
+write_vr_detail = function(this_usage, conn, args_id, target_account, target_month) {
+  ### write the usage table as well. Have fun exploding the DB file!
+
+  df = this_usage
+  df = df[,1:which(names(df) %in% "cost")]
+  if (!("CTRB_BAC" %in% names(df))) {
+    df$CTRB_BAC = NA
+  }
+  df$client_id = args_id
+  df$account = target_account
+  df$month = target_month
+  df$PROCESSED_TIME = as.character(df$PROCESSED_TIME)
+  # names(df)[!(names(df) %in% dbListFields(conn,"vr_detail"))]
+  # ?which
+
+  # dbExecute(conn,'DROP TABLE "vr_detail"')
+  if(!("vr_detail" %in% RSQLite::dbListTables(conn))) {
+    RSQLite::dbWriteTable(conn, "vr_detail", df)
+  }
+
+
+  RSQLite::dbExecute(conn, paste0('DELETE FROM vr_detail WHERE "client_id" = ',args_id,
+                         ' AND "account" = ',target_account,
+                         ' AND "month" = ',target_month))
+
+  RSQLite::dbWriteTable(conn, "vr_detail", df, append = T)
+  RSQLite::dbGetQuery(conn, paste0('SELECT * FROM vr_detail WHERE "client_id" = ',args_id,
+                                   ' AND "account" = ',target_account,
+                                   ' AND "month" = ',target_month))
+  # dbGetQuery(conn, paste0('SELECT * FROM vr_detail WHERE "client_id" = ',args_id))
+}
