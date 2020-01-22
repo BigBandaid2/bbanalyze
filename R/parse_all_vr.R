@@ -248,3 +248,46 @@ cluster_times = function(this_usage, cluster = F) {
 # product_split <- function(filepath) {
 #   return(T)
 # }
+
+### ----------------------------------------------------------------------------
+
+#' Get all VR files from designated directory
+#'
+#' @param dir_vr the directory where we expect to find verification reports
+#'
+#' @return data.frame describing all verification reports found and thier attributes
+#'
+#' @examples \dontrun{
+#'   dir_vr %>% get_vrs()
+#'   }
+#'
+#' @export
+get_vrs = function(dir_vr) {
+  vrs = list.files(dir_vr)
+  vrs = vrs[!(vrs %in% "downloaded")]
+
+  ### removes a wonky named partial file
+  vrs = vrs[nchar(vrs) < 50]
+  # table(nchar(vrs))
+
+  ### get inventory of all given vr files
+
+  vrs_summary = data.frame(filename = vrs)
+
+  vrs_summary$month = sapply(strsplit(vrs,"_"), function(x) x[length(x)])
+  vrs_summary$account = sapply(strsplit(vrs,"_"), function(x) x[length(x)-1])
+
+  vrs_files_type = sapply(strsplit(vrs,"_"), function(x) x[1:(length(x)-2)])
+  vrs_summary$file_type = sapply(vrs_files_type, function(x) paste0(x,collapse = "_"))
+
+  vrs_summary$file_path = file.path(dir_vr,vrs)
+  vrs_summary$file_size = file.info(vrs_summary$file_path)[,1]
+
+  # head(vrs_summary)
+  length(unique(vrs_summary$account))
+
+  vrs_summary = vrs_summary[order(vrs_summary[,"account"], vrs_summary[,"month"]), ]
+  row.names(vrs_summary) = 1:nrow(vrs_summary)
+  return(vrs_summary)
+}
+

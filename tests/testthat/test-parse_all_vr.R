@@ -1,4 +1,5 @@
 # rm(list = ls())
+library(testthat)
 
 filepath <- system.file("extdata", "usage_detail_30225811_201811", package = "bbanalyze")
 
@@ -132,4 +133,17 @@ test_that("parse_all_vr is looping through the files", {
 
 ### ----------------------------------------------------------------------------
 
-this_usage = system.file("extdata", "usage_detail_30225811_201811", package = "bbanalyze") %>% parse_detail()
+system.file("extdata", package = "bbanalyze") %>% get_vrs()
+
+test_that("get vrs is functioning", {
+  expect_equal(
+    system.file("extdata", package = "bbanalyze") %>% get_vrs() %>% nrow(),
+    3,
+    failure_message = "get_vrs() is not counting correctly or test files in ext data have changed"
+  )
+  expect_equal(
+    system.file("extdata", package = "bbanalyze") %>% get_vrs() %>% ncol(),
+    6,
+    failure_message = "get_vrs() producing unexpected columns"
+  )
+})
