@@ -103,6 +103,7 @@ parse_detail <- function(filepath) {
   }
 
   ### special treatment for BVAL usage detail, excluded for now
+
   # if(grepl('cashbval_usage_detail', filepath)) {
   #   names(this_usage) = gsub('MATERIAL_DESC', 'BILLABLE_PRODUCT', names(this_usage)) this_usage$QUALIFIER = ' '
   # }
@@ -317,6 +318,10 @@ write_vr_detail = function(this_usage, conn, args_id, target_account, target_mon
   df$account = target_account
   df$month = target_month
   df$PROCESSED_TIME = as.character(df$PROCESSED_TIME)
+  df$id = paste0(sprintf("%03d", args_id),
+                 sprintf("%09d", target_account),
+                 target_month,
+                 sprintf("%09d", 1:nrow(df)))
   # names(df)[!(names(df) %in% dbListFields(conn,"vr_detail"))]
   # ?which
 
