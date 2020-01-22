@@ -4,7 +4,14 @@
 \alias{write_vr_detail}
 \title{Write the parsed VR detail file contents to DB}
 \usage{
-write_vr_detail(this_usage, conn, args_id, target_account, target_month)
+write_vr_detail(
+  this_usage,
+  conn,
+  args_id,
+  target_account,
+  target_month,
+  drop = F
+)
 }
 \arguments{
 \item{this_usage}{dataframe of the parsed VR detail}
@@ -16,6 +23,8 @@ write_vr_detail(this_usage, conn, args_id, target_account, target_month)
 \item{target_account}{account number for this Bloomberg account}
 
 \item{target_month}{billing month in 'MMYYYY'}
+
+\item{drop}{logical if T then existing table will be dropped}
 }
 \value{
 integer representing number of rows written

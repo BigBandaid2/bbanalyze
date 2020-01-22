@@ -296,16 +296,20 @@ get_vrs = function(dir_vr) {
 #' @param args_id client_id as it currently appears in the DB
 #' @param target_account account number for this Bloomberg account
 #' @param target_month billing month in 'MMYYYY'
+#' @param drop logical if T then existing table will be dropped
 #'
 #' @import RSQLite
 #'
 #' @return integer representing number of rows written
 #' @export
-write_vr_detail = function(this_usage, conn, args_id, target_account, target_month) {
+write_vr_detail = function(this_usage, conn, args_id, target_account, target_month, drop = F) {
   ### write the usage table as well. Have fun exploding the DB file!
 
   df = this_usage
-  df = df[,1:which(names(df) %in% "cost")]
+
+  ### cost is no longer part of this table
+  # df = df[,1:which(names(df) %in% "cost")]
+
   if (!("CTRB_BAC" %in% names(df))) {
     df$CTRB_BAC = NA
   }
@@ -316,7 +320,10 @@ write_vr_detail = function(this_usage, conn, args_id, target_account, target_mon
   # names(df)[!(names(df) %in% dbListFields(conn,"vr_detail"))]
   # ?which
 
-  # dbExecute(conn,'DROP TABLE "vr_detail"')
+  if(drop == T) {
+    dbExecute(conn,'DROP TABLE "vr_detail"')
+  }
+
   if(!("vr_detail" %in% RSQLite::dbListTables(conn))) {
     RSQLite::dbWriteTable(conn, "vr_detail", df)
   }
