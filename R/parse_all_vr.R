@@ -319,7 +319,7 @@ write_vr_detail = function(this_usage, conn, args_id, target_account, target_mon
   df$month = target_month
   df$PROCESSED_TIME = as.character(df$PROCESSED_TIME)
   df$id = paste0(sprintf("%03d", args_id),
-                 sprintf("%09d", target_account),
+                 sprintf("%09s", target_account),
                  target_month,
                  sprintf("%09d", 1:nrow(df)))
   # names(df)[!(names(df) %in% dbListFields(conn,"vr_detail"))]
