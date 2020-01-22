@@ -344,3 +344,109 @@ write_vr_detail = function(this_usage, conn, args_id, target_account, target_mon
                                    ' AND "month" = ',target_month))
   # dbGetQuery(conn, paste0('SELECT * FROM vr_detail WHERE "client_id" = ',args_id))
 }
+
+
+#' Assign the cost of each hit according to a rate card
+#'
+#' @param this_usage data.frame of hits as read from DB
+#' @param rate_card any rate card with relevant rates in effective_rate or List.Price column
+#'
+#' @return dataframe of the hits joined with vr_detail table. data to create virtual invoice also include
+#' @export
+assign_vr_cost = function(this_usage, rate_card) {
+  rate_card$Product = trimws(gsub("\\s*\\([^\\)]+\\)","",rate_card$Product))
+  rate_card$Product = trimws(gsub("Unique|Access","",rate_card$Product))
+
+  names(rate_card) = gsub("Product","BILLABLE_PRODUCT", names(rate_card))
+  unique(rate_card$Request.Type)
+  rate_card$INIT_CHARGE = sapply(rate_card$Request.Type, function(x) if(!is.na(x) & x == "Unique") T else F)
+  # head(rate_card)
+
+  ### manual substitutions to match rate card derived from invoice to BILLABLE_PRODUCT from VR reports
+  rate_card$BILLABLE_PRODUCT = gsub("EqEq","EqtyEqty",rate_card$BILLABLE_PRODUCT)
+  rate_card$BILLABLE_PRODUCT = gsub("SovSupAg ","SovSupAgny ",rate_card$BILLABLE_PRODUCT)
+  unique(rate_card$BILLABLE_PRODUCT)
+
+  rate_card = rate_card[!duplicated(rate_card[,c("BILLABLE_PRODUCT","INIT_CHARGE")]),]
+  rate_card
+
+  ######################################################
+  ### merge with this usage and produce cost ###########
+
+  ### a quick column clean up before the merge just in case
+  this_usage = this_usage[,!(names(this_usage) %in% c("q_effective_rate","Request.Type","Request.Type.x","Request.Type.y","effective_rate"))]
+  # head(this_usage)
+  # head(rate_card)
+
+  table(unique(this_usage$BILLABLE_PRODUCT) %in% unique(rate_card$BILLABLE_PRODUCT))
+
+  ### the scheduled securities VR's don't have an "INIT_CHRG" column. I will add one for now
+  ### the real INIT_CHRG will need to be calculated from the bands, I don't have this yet
+  if(is.null(this_usage$INIT_CHARGE)) {
+    this_usage$INIT_CHARGE = NA
+  }
+
+  this_usage[is.na(this_usage$INIT_CHARGE),"INIT_CHARGE"] = F
+
+  this_usage = merge(this_usage,rate_card, by = c("BILLABLE_PRODUCT","INIT_CHARGE"), all.x = T)
+
+  if("effective_rate" %in% names(this_usage)) {
+    this_usage$cost = this_usage$effective_rate
+  } else if("List.Price" %in% names(this_usage)) {
+    this_usage$cost = this_usage$List.Price
+  }
+
+  # head(this_usage)
+
+  ### checking the ones where merge failed to bring a q_effective_rate
+  # table(unique(this_usage$BILLABLE_PRODUCT) %in% unique(rate_card$BILLABLE_PRODUCT))
+  print("any missing BILLABLE_PRODUCT from invoice rate card")
+  print(table(this_usage[is.na(this_usage$cost),"BILLABLE_PRODUCT"],this_usage[is.na(this_usage$cost),"INIT_CHARGE"]))
+
+  ########################################################################
+
+  ### man, i got a lot shit missing, let's look at the product details sheet again
+  ### how can there be so many items that don't appear on the invoice?
+  ### for now it can take placeholder values, but wll need to come back to this
+
+  # product_details$Product
+  # this_usage$BILLABLE_PRODUCT
+  unique(this_usage$BILLABLE_PRODUCT)
+  # this_usage$BILLABLE_PRODUCT %in% product_details$Product
+
+  #################################################################################
+
+  ### default, if no rate exists on rate card, go with $.01 and $1 for accesss and unique
+  this_usage$cost[this_usage$CTRB_BILLING == F] = 0
+  this_usage$cost[this_usage$INIT_CHARGE == F & this_usage$CTRB_AC == F] = 0
+
+  this_usage[is.na(this_usage$cost) & this_usage$INIT_CHARGE == F,"cost"] = 1
+  # this_usage[is.na(this_usage$cost) & this_usage$INIT_CHARGE == F,"cost"] = .01
+  this_usage$cost = round(this_usage$cost, 2)
+
+  # table(this_usage$INIT_CHARGE)
+
+  ### now I'm inspecting my totals, initially added up to 1.9 million so seems wrong
+  sum(this_usage$cost, na.rm = T)
+  table(is.na(this_usage$cost))
+
+  # vr_invoice_summary[vr_invoice_summary$account %in% target_account &
+  #                      vr_invoice_summary$month %in% target_month, "vr_detail_amount"] = sum(this_usage$cost, na.rm = T)
+  # vr_invoice_summary
+
+  table(this_usage$BILLABLE_PRODUCT, this_usage$CTRB_UNIQ)
+  table(this_usage$BILLABLE_PRODUCT, this_usage$INIT_CHARGE)
+
+  aggregate(cost ~  INIT_CHARGE + BILLABLE_PRODUCT, data = this_usage, FUN = sum)
+
+  # ?sum
+  # table(this_usage$cost,this_usage$CTRB_AC)
+  # table(this_usage$q_effective_rate)
+
+  # sum(as.numeric(this.product_details$Quantity))
+
+  # temp = this_usage[this_usage$cost == 1.7,]
+
+  this_usage %>% as_tibble() %>%
+    dplyr::select(vr_detail_id = id,BILLABLE_PRODUCT,INIT_CHARGE,Request.Type,Data.Category,Fee.Type,Asset.Type,cost)
+}
