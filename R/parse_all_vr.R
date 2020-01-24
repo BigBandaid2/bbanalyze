@@ -453,7 +453,7 @@ assign_vr_cost = function(this_usage, rate_card, conn, run = 1) {
   # temp = this_usage[this_usage$cost == 1.7,]
 
   this_usage = this_usage %>% as_tibble() %>%
-    dplyr::select(vr_detail_id = id,BILLABLE_PRODUCT,INIT_CHARGE,Request.Type,Data.Category,Fee.Type,Asset.Type,cost) %>%
+    dplyr::select(vr_detail_id = id,BILLABLE_PRODUCT,INIT_CHARGE,CTRB_BILLING,Request.Type,Data.Category,Fee.Type,Asset.Type,cost) %>%
     dplyr::mutate(run = paste0(substr(as.character(this_usage[1,"id"]),1,3),sprintf("%03d", run)))
 
   write_vr_cost(this_usage, conn)
@@ -475,10 +475,17 @@ write_vr_cost = function(this_usage, conn, drop = F) {
   df = this_usage
 
   if(drop == T) {
-    dbExecute(conn,'DROP TABLE "vr_cost_detail"')
+
   }
 
   if(!("vr_cost_detail" %in% RSQLite::dbListTables(conn))) {
+    RSQLite::dbWriteTable(conn, "vr_cost_detail", df)
+  }
+
+  ### if the fields have changed, drop the old table and write a new one
+
+  if(!all(names(this_usage) %in% dbListFields(conn,"vr_cost_detail"))) {
+    dbExecute(conn,'DROP TABLE "vr_cost_detail"')
     RSQLite::dbWriteTable(conn, "vr_cost_detail", df)
   }
 
