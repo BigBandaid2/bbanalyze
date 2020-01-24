@@ -356,6 +356,9 @@ write_vr_detail = function(this_usage, conn, args_id, target_account, target_mon
 #' @return dataframe of the hits joined with vr_detail table. data to create virtual invoice also include
 #' @export
 assign_vr_cost = function(this_usage, rate_card, conn, run = 1) {
+  # rate_card = list_rate_card
+  # run = 1
+
   rate_card$Product = trimws(gsub("\\s*\\([^\\)]+\\)","",rate_card$Product))
   rate_card$Product = trimws(gsub("Unique|Access","",rate_card$Product))
 
@@ -451,7 +454,7 @@ assign_vr_cost = function(this_usage, rate_card, conn, run = 1) {
 
   this_usage = this_usage %>% as_tibble() %>%
     dplyr::select(vr_detail_id = id,BILLABLE_PRODUCT,INIT_CHARGE,Request.Type,Data.Category,Fee.Type,Asset.Type,cost) %>%
-    dplyr::mutate(run = paste0(substr(this_usage[1,"id"],1,3),sprintf("%03d", run)))
+    dplyr::mutate(run = paste0(substr(as.character(this_usage[1,"id"]),1,3),sprintf("%03d", run)))
 
   write_vr_cost(this_usage, conn)
 }
@@ -479,11 +482,11 @@ write_vr_cost = function(this_usage, conn, drop = F) {
     RSQLite::dbWriteTable(conn, "vr_cost_detail", df)
   }
 
-  run = this_usage[1,"run"]
+  run = as.character(this_usage[1,"run"])
 
-  RSQLite::dbExecute(conn, paste0('DELETE FROM vr_cost_detail WHERE "run" = ',run))
+  RSQLite::dbExecute(conn, paste0('DELETE FROM vr_cost_detail WHERE "run" LIKE "',run,'"'))
 
   RSQLite::dbWriteTable(conn, "vr_cost_detail", df, append = T)
-  RSQLite::dbGetQuery(conn, paste0('SELECT * FROM vr_cost_detail WHERE "run" = ',run))
+  RSQLite::dbGetQuery(conn, paste0('SELECT * FROM vr_cost_detail WHERE "run" LIKE "',run,'"'))
 
 }
