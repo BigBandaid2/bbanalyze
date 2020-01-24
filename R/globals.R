@@ -1,1 +1,14 @@
-utils::globalVariables(c(".","BO_OPTIMIZED","CTRB_BILLING"))
+utils::globalVariables(
+  c(
+    ".",
+    "BO_OPTIMIZED",
+    "CTRB_BILLING",
+    "Asset.Type",
+    "BILLABLE_PRODUCT",
+    "Data.Category",
+    "Fee.Type",
+    "INIT_CHARGE",
+    "Request.Type",
+    "cost"
+  )
+)
