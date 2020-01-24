@@ -4,12 +4,16 @@
 \alias{assign_vr_cost}
 \title{Assign the cost of each hit according to a rate card}
 \usage{
-assign_vr_cost(this_usage, rate_card)
+assign_vr_cost(this_usage, rate_card, conn, run = 1)
 }
 \arguments{
 \item{this_usage}{data.frame of hits as read from DB}
 
 \item{rate_card}{any rate card with relevant rates in effective_rate or List.Price column}
+
+\item{conn}{DB connection}
+
+\item{run}{integer, gives a run count to differentiate different iterations}
 }
 \value{
 dataframe of the hits joined with vr_detail table. data to create virtual invoice also include

@@ -301,7 +301,7 @@ get_vrs = function(dir_vr) {
 #'
 #' @import RSQLite
 #'
-#' @return integer representing number of rows written
+#' @return dataframe representing the whole table just written to DB
 #' @export
 write_vr_detail = function(this_usage, conn, args_id, target_account, target_month, drop = F) {
   ### write the usage table as well. Have fun exploding the DB file!
@@ -350,10 +350,12 @@ write_vr_detail = function(this_usage, conn, args_id, target_account, target_mon
 #'
 #' @param this_usage data.frame of hits as read from DB
 #' @param rate_card any rate card with relevant rates in effective_rate or List.Price column
+#' @param run integer, gives a run count to differentiate different iterations
+#' @param conn DB connection
 #'
 #' @return dataframe of the hits joined with vr_detail table. data to create virtual invoice also include
 #' @export
-assign_vr_cost = function(this_usage, rate_card) {
+assign_vr_cost = function(this_usage, rate_card, conn, run = 1) {
   rate_card$Product = trimws(gsub("\\s*\\([^\\)]+\\)","",rate_card$Product))
   rate_card$Product = trimws(gsub("Unique|Access","",rate_card$Product))
 
@@ -447,6 +449,41 @@ assign_vr_cost = function(this_usage, rate_card) {
 
   # temp = this_usage[this_usage$cost == 1.7,]
 
-  this_usage %>% as_tibble() %>%
-    dplyr::select(vr_detail_id = id,BILLABLE_PRODUCT,INIT_CHARGE,Request.Type,Data.Category,Fee.Type,Asset.Type,cost)
+  this_usage = this_usage %>% as_tibble() %>%
+    dplyr::select(vr_detail_id = id,BILLABLE_PRODUCT,INIT_CHARGE,Request.Type,Data.Category,Fee.Type,Asset.Type,cost) %>%
+    dplyr::mutate(run = paste0(substr(this_usage[1,"id"],1,3),sprintf("%03d", run)))
+
+  write_vr_cost(this_usage, conn)
+}
+
+#' Write the parsed VR detail file contents to DB
+#'
+#' @param this_usage dataframe of the parsed VR detail costs
+#' @param conn DB connection SQLite object
+#' @param drop logical if T then existing table will be dropped
+#'
+#' @import RSQLite
+#'
+#' @return dataframe representing the whole table just written to DB
+#' @export
+write_vr_cost = function(this_usage, conn, drop = F) {
+  ### write the usage table as well. Have fun exploding the DB file!
+
+  df = this_usage
+
+  if(drop == T) {
+    dbExecute(conn,'DROP TABLE "vr_cost_detail"')
+  }
+
+  if(!("vr_cost_detail" %in% RSQLite::dbListTables(conn))) {
+    RSQLite::dbWriteTable(conn, "vr_cost_detail", df)
+  }
+
+  run = this_usage[1,"run"]
+
+  RSQLite::dbExecute(conn, paste0('DELETE FROM vr_cost_detail WHERE "run" = ',run))
+
+  RSQLite::dbWriteTable(conn, "vr_cost_detail", df, append = T)
+  RSQLite::dbGetQuery(conn, paste0('SELECT * FROM vr_cost_detail WHERE "run" = ',run))
+
 }
