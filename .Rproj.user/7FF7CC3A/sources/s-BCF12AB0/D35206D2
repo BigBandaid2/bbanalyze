@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1577980910081.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "D35206D2",
+    "lastKnownWriteTime" : 1578606680,
+    "last_content_update" : 1578606680273,
+    "path" : "~/GitHub/bbanalyze/R/data.R",
+    "project_path" : "R/data.R",
+    "properties" : {
+        "cursorPosition" : "99,37",
+        "scrollLine" : "77",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 9,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

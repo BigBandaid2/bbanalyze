@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1578402035112.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "B2E0C498",
+    "lastKnownWriteTime" : 1577368501,
+    "last_content_update" : 1577368501,
+    "path" : "C:/Users/Ethan Shen/Downloads/fars_functions.r",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "196,0",
+        "scrollLine" : "183"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

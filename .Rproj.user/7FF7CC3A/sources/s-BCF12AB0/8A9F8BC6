@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1577826289426.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "8A9F8BC6",
+    "lastKnownWriteTime" : 1578929640,
+    "last_content_update" : 1578929640505,
+    "path" : "~/GitHub/bbanalyze/R/parse_all_vr.R",
+    "project_path" : "R/parse_all_vr.R",
+    "properties" : {
+        "cursorPosition" : "151,2",
+        "scrollLine" : "150"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1577982197534.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "C9AAF65D",
+    "lastKnownWriteTime" : 1578004808,
+    "last_content_update" : 1578004808134,
+    "path" : "~/GitHub/bbanalyze/tests/testthat/test-parse_all_vr.R",
+    "project_path" : "tests/testthat/test-parse_all_vr.R",
+    "properties" : {
+        "cursorPosition" : "135,0",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
