@@ -18,3 +18,6 @@ Municipals,Muni,Municipal
 Options/Futures/FX/Warrants/Currencies,OpFutFx,ListDer
 Sovereign/Supranational/Agency,SovSupAgny,FixedIncome
 US Govt,USGovt,FixedIncome
+Equity,-,Equity
+Fixed Income,,FixedIncome
+Listed Derivatives,,ListDer

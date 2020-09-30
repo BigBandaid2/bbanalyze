@@ -53,10 +53,11 @@ usethis::use_data(dl_products)
 # bbg_mapping = readLines(file.path(".","data-raw","BbgMapping.conf"))
 # usethis::use_data(bbg_mapping)
 
+# setwd("C:/Users/EthanShen/Documents/GitHub/gain_shiny/bbanalyze")
 # ?read.csv
 asset_class_mapping = read.csv(file.path(".","data-raw","vr_asset_class_mapping.csv"), stringsAsFactors = F)
 head(asset_class_mapping)
-usethis::use_data(asset_class_mapping)
+usethis::use_data(asset_class_mapping, overwrite = T)
 
 product_mapping = read.csv(file.path(".","data-raw","vr_product_dl_cat_mapping.csv"), stringsAsFactors = F)
 head(product_mapping)

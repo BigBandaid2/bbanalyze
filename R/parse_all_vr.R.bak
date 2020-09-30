@@ -397,52 +397,18 @@ assign_vr_cost = function(this_usage, rate_card, conn, run = 1) {
 
   names(rate_card) = gsub("Product","BILLABLE_PRODUCT", names(rate_card))
   unique(rate_card$Request.Type)
-  # rate_card %>% filter(is.na(Request.Type))
-  
-  ##############################################################################
-  ### INIT_CHARGE
-  # temp = data[data$CTRB_BILLING %in% "Y" & data$CTRB_UNIQ %in% "Y" & data$INIT_CHARGE %in% "Y",]
-  
   rate_card$INIT_CHARGE = sapply(rate_card$Request.Type, function(x) if(!is.na(x) & x %in% "Unique") T else F)
-  rate_card$CTRB_UNIQ = sapply(rate_card$Request.Type, function(x) if(!is.na(x) & x %in% "Unique") T else F)
-  
-  ### ACCESS
-  # temp = data[data$CTRB_BILLING %in% "Y" & data$CTRB_AC %in% "Y" & data$BO_OPTIMIZED %in% "N",]
-  
-  rate_card$CTRB_AC = sapply(rate_card$Request.Type, function(x) if(!is.na(x) & x %in% "Access") T else F)
-  rate_card = rate_card %>% mutate(BO_OPTIMIZED = F)
-  # rate_card$BO_OPTIMIZED = sapply(rate_card$Request.Type, function(x) if(!is.na(x) & x %in% "Access") F else T)
-  
-  ### MAINTAINED
-  # temp = data[data$CTRB_BILLING %in% "Y" & data$CTRB_MAIN %in% "Y" & data$INIT_CHARGE %in% "Y",]
-  
   rate_card$CTRB_MAIN = sapply(rate_card$Request.Type, function(x) if(!is.na(x) & x %in% "Maintained") T else F)
-  rate_card = rate_card %>% mutate(INIT_CHARGE = ifelse(Request.Type %in% "Maintained", T, INIT_CHARGE))
-  # rate_card$INIT_CHARGE = sapply(rate_card$Request.Type, function(x) if(!is.na(x) & x %in% "Maintained") T else F)
-  
-  ### BBO_OPTIMIZED
-  # temp = data[data$CTRB_BILLING %in% "Y" & data$BO_OPTIMIZED %in% "Y",]
-  
   rate_card$BO_OPTIMIZED = sapply(rate_card$Request.Type, function(x) if(!is.na(x) & x %in% c("Access Bulk","BoOptimized Access")) T else F)
-  
+
   ### rate card add an extra for the maintained to accept UNIQ = T and MAIN = T
-  ### if this is still required, now it has to be reversed to create a FALSE scenario
-  
-  # rate_card = rate_card %>% filter(Request.Type %in% "Maintained") %>% mutate(INIT_CHARGE = T) %>%
-  #   plyr::rbind.fill(rate_card)
+  rate_card = rate_card %>% filter(Request.Type %in% "Maintained") %>% mutate(INIT_CHARGE = T) %>%
+    plyr::rbind.fill(rate_card)
 
   ### rate card add an extra for the bo access to accept UNIQ = T and BO_OPT = T
   rate_card = rate_card %>% filter(Request.Type %in% c("Access Bulk","BoOptimized Access")) %>% mutate(INIT_CHARGE = T) %>%
     plyr::rbind.fill(rate_card)
 
-  ### rate card add an extra for the INIT that also have CTRB_AC as 1
-  rate_card = rate_card %>% filter(Request.Type %in% c("Unique")) %>% mutate(CTRB_AC = T) %>%
-    plyr::rbind.fill(rate_card)
-  
-  ### rate card add an extra for the ACCESS that also have CTRB_UNIQ as 1
-  rate_card = rate_card %>% filter(Request.Type %in% c("Access")) %>% mutate(CTRB_UNIQ = T) %>%
-    plyr::rbind.fill(rate_card)
-  
   # list_rate_card$Request.Type %>% unique()
   # head(rate_card)
 
@@ -451,9 +417,6 @@ assign_vr_cost = function(this_usage, rate_card, conn, run = 1) {
   rate_card$BILLABLE_PRODUCT = gsub("SovSupAg ","SovSupAgny ",rate_card$BILLABLE_PRODUCT)
   unique(rate_card$BILLABLE_PRODUCT)
 
-  rate_card %>% filter(is.na(Request.Type))
-  
-  ### making an average effective rate card so that the hit rate for Sched INIT's are not the cost of the whole tier
   rate_card = rate_card %>% mutate(
     List.Price = ifelse(
       Fee.Type %in% "SCHEDULED" &
@@ -463,7 +426,7 @@ assign_vr_cost = function(this_usage, rate_card, conn, run = 1) {
     )
   )
 
-  rate_card = rate_card[!duplicated(rate_card[,c("BILLABLE_PRODUCT","INIT_CHARGE","CTRB_MAIN","BO_OPTIMIZED","CTRB_UNIQ","CTRB_AC")]),]
+  rate_card = rate_card[!duplicated(rate_card[,c("BILLABLE_PRODUCT","INIT_CHARGE","CTRB_MAIN","BO_OPTIMIZED")]),]
   rate_card
 
   ######################################################
@@ -475,10 +438,9 @@ assign_vr_cost = function(this_usage, rate_card, conn, run = 1) {
   # head(rate_card)
 
   table(unique(this_usage$BILLABLE_PRODUCT) %in% unique(rate_card$BILLABLE_PRODUCT))
-  table(this_usage$BILLABLE_PRODUCT, this_usage$CTRB_MAIN)
+  table(this_usage$BILLABLE_PRODUCT, is.na(this_usage$CTRB_MAIN))
 
-  ### if there is no value in CTRB_MAIN, then fill it in, it must be coming from sched or bval
-  this_usage = this_usage %>% mutate(CTRB_MAIN = ifelse(is.na(CTRB_MAIN),0,CTRB_MAIN))
+  this_usage = this_usage %>% mutate(CTRB_MAIN = ifelse(is.na(CTRB_MAIN),F,CTRB_MAIN))
 
   ### the scheduled securities VR's don't have an "INIT_CHRG" column. I will add one for now
   ### the real INIT_CHRG will need to be calculated from the bands, I don't have this yet
@@ -489,7 +451,7 @@ assign_vr_cost = function(this_usage, rate_card, conn, run = 1) {
   # this_usage[is.na(this_usage$INIT_CHARGE),"INIT_CHARGE"] = F
 
   if(is.null(this_usage$CTRB_MAIN)) {
-    this_usage$CTRB_MAIN = 0
+    this_usage$CTRB_MAIN = F
   }
   # this_usage[is.na(this_usage$CTRB_MAIN),"CTRB_MAIN"] = F
   # table(this_usage$CTRB_MAIN)
@@ -500,41 +462,16 @@ assign_vr_cost = function(this_usage, rate_card, conn, run = 1) {
 
   df = this_usage %>% filter(is.na(INIT_CHARGE))
   x = duplicated(df[,c("ID_BB_UNIQUE","BILLABLE_PRODUCT")])
-  df = df %>% mutate(INIT_CHARGE = ifelse(x,0,1))
-  this_usage = this_usage %>% filter(!is.na(INIT_CHARGE)) %>% plyr::rbind.fill(df)
-    # mutate(CTRB_MAIN = 0)
+  df = df %>% mutate(INIT_CHARGE = ifelse(x,F,T))
+  this_usage = this_usage %>% filter(!is.na(INIT_CHARGE)) %>% plyr::rbind.fill(df) %>%
+    mutate(CTRB_MAIN = F)
 
-  table(this_usage$CTRB_MAIN)
-  
-  ### ok, let's figure out what's going on with SecMastr
-  
-  
-  this_usage = merge(
-    this_usage,
-    rate_card,
-    by = c(
-      "BILLABLE_PRODUCT",
-      "INIT_CHARGE",
-      "CTRB_MAIN",
-      "BO_OPTIMIZED",
-      "CTRB_AC",
-      "CTRB_UNIQ"
-    ),
-    all.x = T
-  )
-  
-  this_usage$List.Price %>% sum(na.rm = T)
-  # ?sum
+  this_usage = merge(this_usage,rate_card, by = c("BILLABLE_PRODUCT","INIT_CHARGE", "CTRB_MAIN", "BO_OPTIMIZED"), all.x = T)
   table(this_usage$BILLABLE_PRODUCT, this_usage$Request.Type, useNA = "ifany")
-  
-  ### inspecting US GOVT
-  # this_usage %>% filter(CTRB_UNIQ %in% T, INIT_CHARGE %in% T, BILLABLE_PRODUCT %in% "USGovt History")
-  # this_usage %>% filter(CTRB_MAIN %in% T, BILLABLE_PRODUCT %in% "USGovt History")
-  # table(this_usage$BILLABLE_PRODUCT, this_usage$CTRB_MAIN)
 
   this_usage = this_usage %>% mutate(
     # List.Price = ifelse(is.na(List.Price), .01, List.Price),
-    cost = List.Price * factor
+    cost = List.Price
     )
   # if("effective_rate" %in% names(this_usage)) {
   #   this_usage$cost = this_usage$effective_rate
@@ -563,15 +500,15 @@ assign_vr_cost = function(this_usage, rate_card, conn, run = 1) {
   #################################################################################
 
   ### default, if no rate exists on rate card, go with $.01 and $1 for access and unique
-  this_usage$cost[this_usage$CTRB_BILLING == 0] = 0
+  this_usage$cost[this_usage$CTRB_BILLING == F] = 0
 
   ### this seems key, it must have an init or access charge...
-  this_usage$cost[this_usage$INIT_CHARGE == 0 & this_usage$CTRB_AC == 0] = 0
+  this_usage$cost[this_usage$INIT_CHARGE == F & this_usage$CTRB_AC == F] = 0
 
   table(is.na(this_usage$cost))
 
-  this_usage[is.na(this_usage$cost) & this_usage$INIT_CHARGE == 1,"cost"] = 1
-  this_usage[is.na(this_usage$cost) & this_usage$INIT_CHARGE == 0,"cost"] = .01
+  this_usage[is.na(this_usage$cost) & this_usage$INIT_CHARGE == T,"cost"] = 1
+  this_usage[is.na(this_usage$cost) & this_usage$INIT_CHARGE == F,"cost"] = .01
   this_usage$cost = round(this_usage$cost, 4)
 
   # table(this_usage$INIT_CHARGE)
@@ -606,8 +543,6 @@ assign_vr_cost = function(this_usage, rate_card, conn, run = 1) {
       CTRB_BILLING,
       CTRB_MAIN,
       BO_OPTIMIZED,
-      CTRB_UNIQ,
-      CTRB_AC,
       Request.Type,
       Data.Category,
       Fee.Type,
@@ -655,11 +590,7 @@ write_vr_cost = function(this_usage, conn, drop = F) {
     }
   }
 
-  run = as.character(this_usage[1,"run"])
 
-  RSQLite::dbExecute(conn, paste0('DELETE FROM vr_cost_detail WHERE "run" LIKE "',run,'"'))
-
-  RSQLite::dbWriteTable(conn, "vr_cost_detail", df, append = T)
   RSQLite::dbGetQuery(conn, paste0('SELECT * FROM vr_cost_detail WHERE "run" LIKE "',run,'"'))
 
 }
