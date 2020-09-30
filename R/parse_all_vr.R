@@ -657,9 +657,10 @@ write_vr_cost = function(this_usage, conn, drop = F) {
 
   run = as.character(this_usage[1,"run"])
 
-  RSQLite::dbExecute(conn, paste0('DELETE FROM vr_cost_detail WHERE "run" LIKE "',run,'"'))
+  # RSQLite::dbExecute(conn, paste0('DELETE FROM vr_cost_detail WHERE "run" LIKE "',run,'"'))
 
   RSQLite::dbWriteTable(conn, "vr_cost_detail", df, append = T)
-  RSQLite::dbGetQuery(conn, paste0('SELECT * FROM vr_cost_detail WHERE "run" LIKE "',run,'"'))
+
+  df
 
 }

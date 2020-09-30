@@ -1,0 +1,33 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1578604729532.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "869D9C0C",
+    "lastKnownWriteTime" : 8392533918479102299,
+    "last_content_update" : 1578604729532,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "8CF1F6B7",
+        "caption" : "bulk_fields_by_product",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=bulk_fields_by_product&cache_key=8CF1F6B7",
+        "displayedObservations" : 6,
+        "environment" : "",
+        "expression" : "bulk_fields_by_product",
+        "object" : "bulk_fields_by_product",
+        "preview" : 0,
+        "totalObservations" : 6,
+        "variables" : 122
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 11,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

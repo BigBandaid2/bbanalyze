@@ -1,0 +1,29 @@
+Package: bbanalyze
+Type: Package
+Title: A collection of tools to read and interpret Bloomberg Enterprise data usage
+Version: 0.0.0.9000
+Authors@R: person("Ethan","Shen",email = "ethanshen121@gmail.com", role = c("aut","cre"))
+Maintainer: The package maintainer <yourself@somewhere.net>
+Description: A collection of tools to read and interpret Bloomberg Enterprise data usage.
+    Data usage can be interpreted from detailed monthly reports (verification reports),
+    invoices, and collections of request files. This package provides tools to reconstruct
+    a detailed data usage history and use recontructed histories to run simulations,
+    conduct what if analysis and provide recommendations for optimizations.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 2.1.0)
+Imports:
+    RSQLite,
+    magrittr,
+    stats,
+    tibble,
+    plyr,
+    dplyr,
+    readr
+VignetteBuilder: knitr
+RoxygenNote: 7.0.2
+Depends: R (>= 3.1)
